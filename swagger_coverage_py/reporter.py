@@ -24,7 +24,8 @@ class CoverageReporter:
 
     def __get_output_dir(self):
         output_dir = "swagger-coverage-output"
-        subdir = re.match(r"(^\w*)://(.*)", self.host).group(2)
+        # TODO: поправили строчку
+        subdir = re.match(r"(^\w*)://(.*)", self.host).group(2).replace(".","_").replace(":","_")
         return f"{output_dir}/{subdir}"
 
     def __get_ignored_paths_from_config(self) -> List[str]:

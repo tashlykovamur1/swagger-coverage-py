@@ -1,5 +1,6 @@
 import json
 import os
+import pathlib
 import platform
 import re
 import urllib
@@ -128,7 +129,8 @@ class ApiDocsManagerBase:
         return self._get_other_request_params(params_key="headers", params_in="header")
 
     def __get_output_subdir(self):
-        return re.match(r"(^\w*)://(.*)", self._uri.host).group(2)
+        # TODO: поправили строчку
+        return re.match(r"(^\w*)://(.*)", self._uri.host).group(2).replace(".", "_").replace(":", "_")
 
     def write_schema(self):
         schema_dict = self._get_schema()
@@ -137,6 +139,8 @@ class ApiDocsManagerBase:
             "/", "-"
         ).replace(":", "_")
         path_ = f"swagger-coverage-output/{self.__get_output_subdir()}"
+        # TODO: добавили создание папки
+        pathlib.Path(path_).mkdir(parents=True, exist_ok=True)
         file_path = f"{path_}/{file_name}".split("?")[0]
         file_path = f"{file_path} ({rnd}).{API_DOCS_FORMAT}"
 
